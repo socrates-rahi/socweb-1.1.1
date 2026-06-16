@@ -33,7 +33,7 @@ export function IntroSequence() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=1500", // Scroll distance for the pinning
+          end: "+=2200", // Increased scroll distance for text transitions
           scrub: 1,
           pin: true, // Pin the Hero Section
         },
@@ -90,17 +90,35 @@ export function IntroSequence() {
         { filter: "blur(0px)", opacity: 1, scale: 1, ease: "power2.out", duration: 0.6 }, 
         0.3
       )
-      .fromTo(heroSubtextRef.current, 
-        { filter: "blur(10px)", opacity: 0, y: 20 },
-        { filter: "blur(0px)", opacity: 1, y: 0, ease: "power2.out", duration: 0.6 }, 
-        0.4
-      )
       .to(dotsRef.current, {
         backgroundSize: "24px 24px",
         opacity: 0.3,
         ease: "power2.inOut",
         duration: 1,
       }, 0);
+
+      // Ensure subtext is completely hidden from the start
+      gsap.set(heroSubtextRef.current, { opacity: 0, filter: "blur(10px)", scale: 0.95 });
+
+      // Phase 2: Transition from Main Text to Subtext
+      tl.to(heroTextRef.current, {
+        filter: "blur(12px)",
+        opacity: 0,
+        scale: 1.05,
+        duration: 0.4,
+        ease: "power2.inOut",
+      }, 1.4)
+      .to(heroSubtextRef.current, {
+        filter: "blur(0px)",
+        opacity: 1,
+        scale: 1,
+        pointerEvents: "auto",
+        duration: 0.4,
+        ease: "power2.inOut",
+      }, 1.8);
+
+      // Phase 3: Add buffer so subtext is readable before unpinning
+      tl.to({}, { duration: 0.6 });
 
       return () => {
         tl.kill();
@@ -134,10 +152,10 @@ export function IntroSequence() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
 
         {/* Hero Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center max-w-5xl px-6 text-center">
+        <div className="relative z-10 grid items-center justify-items-center max-w-5xl px-6 text-center w-full">
           <h2 
             ref={heroTextRef}
-            className="text-5xl md:text-7xl lg:text-8xl font-semibold text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50 mb-8 leading-[1.05] tracking-tight relative"
+            className="col-start-1 row-start-1 text-5xl md:text-7xl lg:text-8xl font-semibold text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50 leading-[1.05] tracking-tight relative"
           >
             Craft the Identity that closes the round
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-accent/30 to-transparent bg-clip-text text-transparent opacity-50 blur-sm pointer-events-none" />
@@ -145,7 +163,7 @@ export function IntroSequence() {
 
           <p 
             ref={heroSubtextRef}
-            className="text-lg md:text-2xl text-white/70 max-w-3xl leading-relaxed font-sans"
+            className="col-start-1 row-start-1 text-lg md:text-2xl text-white/70 max-w-3xl leading-relaxed font-sans opacity-0 pointer-events-none"
           >
             We are your complete creative partner. We craft high-end branding, shoot cinematic media, and run trend-optimized socials for startups, established businesses, and ambitious individuals who refuse to blend in.
           </p>

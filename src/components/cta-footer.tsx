@@ -2,6 +2,8 @@
 
 import { ArrowRight, ArrowUp } from "lucide-react";
 
+import Link from "next/link";
+
 export function CTAFooter() {
   return (
     <footer className="w-full relative overflow-hidden pt-32 pb-8 shimmer-edge" style={{ background: "var(--background)" }}>
@@ -13,10 +15,10 @@ export function CTAFooter() {
         {/* Pricing CTA */}
         <div className="mb-20 flex flex-col items-center">
           <span className="mono-meta mb-4">Curious about the investment?</span>
-          <button className="group flex items-center gap-3 px-7 py-3.5 rounded-xl transition-all text-white text-sm font-medium font-[family-name:var(--font-mono)] tracking-wide uppercase" style={{ background: "var(--bg-card)", border: "1px solid var(--border-medium)" }}>
+          <Link href="/packages" className="group flex items-center gap-3 px-7 py-3.5 rounded-xl transition-all text-white text-sm font-medium font-[family-name:var(--font-mono)] tracking-wide uppercase hover:bg-white/5" style={{ background: "var(--bg-card)", border: "1px solid var(--border-medium)" }}>
             View Pricing Packages
             <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform text-white/40" />
-          </button>
+          </Link>
         </div>
 
         {/* Final CTA */}
@@ -67,9 +69,15 @@ export function CTAFooter() {
             <span className="mono-meta block mb-4">Core System</span>
             <div className="space-y-2.5">
               {["AI_BLUEPRINT_LAB", "CLIENT_ENDORSEMENTS", "SERVICE_PRICING"].map((link) => (
-                <a key={link} href="#" className="block text-white/40 text-xs font-[family-name:var(--font-mono)] tracking-wider hover:text-accent transition-colors uppercase">
-                  {link}
-                </a>
+                link === "SERVICE_PRICING" ? (
+                  <Link key={link} href="/packages" className="block text-white/40 text-xs font-[family-name:var(--font-mono)] tracking-wider hover:text-accent transition-colors uppercase">
+                    {link}
+                  </Link>
+                ) : (
+                  <a key={link} href="#" className="block text-white/40 text-xs font-[family-name:var(--font-mono)] tracking-wider hover:text-accent transition-colors uppercase">
+                    {link}
+                  </a>
+                )
               ))}
               <button 
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}

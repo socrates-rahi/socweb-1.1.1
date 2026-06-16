@@ -16,7 +16,7 @@ const partners = [
 export function LogoMarquee() {
   return (
     <section className="w-full py-16 overflow-hidden shimmer-edge" style={{ background: "var(--background)" }}>
-      
+
       {/* Top labels */}
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between mb-10">
         <div className="section-label">Our Featured Partners</div>
@@ -32,8 +32,8 @@ export function LogoMarquee() {
         <div className="group flex overflow-hidden">
           <div className="flex shrink-0 animate-marquee group-hover:[animation-play-state:paused]">
             {[...partners, ...partners, ...partners].map((partner, i) => (
-              <div 
-                key={i} 
+              <div
+                key={i}
                 className="tech-card mx-3 flex-shrink-0 w-56 p-5 flex flex-col gap-3 cursor-pointer"
               >
                 <div className="flex items-center gap-3">

@@ -2,9 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Briefcase, DollarSign, Mail, Home } from "lucide-react";
+
+import { DottedSurface } from "@/components/ui/dotted-surface";
 
 export function IntroSequence() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -14,7 +17,6 @@ export function IntroSequence() {
   const navItemsRef = useRef<HTMLDivElement>(null);
   const heroTextRef = useRef<HTMLHeadingElement>(null);
   const heroSubtextRef = useRef<HTMLParagraphElement>(null);
-  const dotsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -89,13 +91,7 @@ export function IntroSequence() {
         { filter: "blur(12px)", opacity: 0, scale: 1.05 },
         { filter: "blur(0px)", opacity: 1, scale: 1, ease: "power2.out", duration: 0.6 }, 
         0.3
-      )
-      .to(dotsRef.current, {
-        backgroundSize: "24px 24px",
-        opacity: 0.3,
-        ease: "power2.inOut",
-        duration: 1,
-      }, 0);
+      );
 
       // Ensure subtext is completely hidden from the start
       gsap.set(heroSubtextRef.current, { opacity: 0, filter: "blur(10px)", scale: 0.95 });
@@ -137,16 +133,8 @@ export function IntroSequence() {
         ref={containerRef} 
         className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden pt-16" style={{ background: "var(--background)" }}
       >
-        {/* Dotted Background */}
-        <div 
-          ref={dotsRef}
-          className="absolute inset-0 pointer-events-none opacity-50"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0)`,
-            backgroundSize: "48px 48px",
-            backgroundPosition: "center center",
-          }}
-        />
+        {/* Animated 3D Background Dots */}
+        <DottedSurface className="absolute inset-0 z-0 opacity-100" />
         
         {/* Glowing Blob */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
@@ -206,7 +194,7 @@ export function IntroSequence() {
           
           <div className="flex items-center gap-2">
             <NavItem icon={<Briefcase className="size-4" />} label="Work" />
-            <NavItem icon={<DollarSign className="size-4" />} label="Price" />
+            <NavItem icon={<DollarSign className="size-4" />} label="Price" href="/packages" />
             <NavItem icon={<Mail className="size-4" />} label="Contact" />
           </div>
         </div>
@@ -215,15 +203,31 @@ export function IntroSequence() {
   );
 }
 
-function NavItem({ icon, label }: { icon: React.ReactNode; label: string }) {
-  return (
-    <button className="group relative flex items-center justify-center size-10 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all overflow-hidden duration-300 w-10 hover:w-28 shrink-0">
+function NavItem({ icon, label, href }: { icon: React.ReactNode; label: string; href?: string }) {
+  const content = (
+    <>
       <span className="absolute left-3 shrink-0 text-white/70 group-hover:text-white transition-colors">
         {icon}
       </span>
-      <span className="absolute left-10 opacity-0 group-hover:opacity-100 text-sm font-medium text-white whitespace-nowrap transition-opacity duration-300 delay-100">
+      <span className="absolute left-10 text-xs font-medium text-white/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 font-[family-name:var(--font-mono)] uppercase tracking-wider">
         {label}
       </span>
+    </>
+  );
+
+  const className = "group relative flex items-center justify-center size-10 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition-all overflow-hidden duration-300 w-10 hover:w-28 shrink-0";
+
+  if (href) {
+    return (
+      <Link href={href} className={className}>
+        {content}
+      </Link>
+    );
+  }
+
+  return (
+    <button className={className}>
+      {content}
     </button>
   );
 }

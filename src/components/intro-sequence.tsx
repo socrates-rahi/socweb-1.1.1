@@ -5,9 +5,10 @@ import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Briefcase, DollarSign, Mail, Home } from "lucide-react";
+import { Briefcase, DollarSign, Mail, Home, ArrowDown } from "lucide-react";
 
 import { DottedSurface } from "@/components/ui/dotted-surface";
+import { InkReveal } from "@/components/ui/ink-reveal";
 
 export function IntroSequence() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -161,26 +162,70 @@ export function IntroSequence() {
       {/* FrameOne floating navbar overlay */}
       <div
         ref={frameRef}
-        className="fixed z-50 overflow-hidden flex items-center justify-center origin-center pointer-events-auto shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
+        className="fixed z-50 overflow-hidden flex items-center justify-center origin-center pointer-events-auto shadow-[0_10px_40px_rgba(0,0,0,0.1)] bg-white"
         style={{ width: "100vw", height: "100vh", top: 0, left: "50%", transform: "translateX(-50%)" }}
       >
-        <div className="absolute inset-0 w-full h-full">
-          <Image
-            ref={imageRef}
-            src="/frame.png"
-            alt="3D Digital Circuit"
-            fill
-            className="object-cover opacity-80"
-            priority
+        {/* White Grid Background (under everything) */}
+        <div className="absolute inset-0 bg-white z-0" />
+        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-100 z-0" />
+
+        {/* The Glowing Shader (revealed by ink) - Custom High-Performance CSS Shader */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-[#2a1122]">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,#b76e79_0%,transparent_50%)] animate-pulse duration-1000 opacity-90 blur-2xl" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,#6b21a8_0%,transparent_50%)] animate-pulse duration-1000 opacity-80 blur-2xl delay-700" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_60%,#c2410c_0%,transparent_60%)] animate-pulse duration-1000 opacity-80 blur-3xl delay-500" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,#ca8a04_0%,transparent_40%)] animate-pulse duration-1000 opacity-70 blur-2xl delay-300" />
+          
+          {/* Moving background layer for extra depth */}
+          <div 
+            className="absolute -inset-[100%] opacity-40 blur-3xl"
+            style={{
+              background: "conic-gradient(from 0deg, #b76e79, #6b21a8, #ca8a04, #c2410c, #b76e79)",
+              animation: "spin 20s linear infinite",
+            }}
           />
         </div>
-        
-        <h1
-          ref={textRef}
-          className="absolute text-3xl md:text-5xl lg:text-7xl font-heading font-medium text-white text-center w-full px-6 leading-tight tracking-tight drop-shadow-2xl translate-y-6 md:translate-y-10"
-        >
-          Stop burning cash on<br />content that doesn't work.
-        </h1>
+
+        {/* The InkReveal Mask (White mask [255, 255, 255] to match frame background) */}
+        <div className="absolute inset-0 z-10">
+          <InkReveal maskColor={[255, 255, 255]} />
+        </div>
+
+        {/* Center Content Group */}
+        <div className="relative z-20 flex flex-col items-center justify-center text-center px-6 pointer-events-none w-full max-w-5xl">
+          <p className="text-black/40 text-xs md:text-sm tracking-[0.2em] font-[family-name:var(--font-mono)] uppercase mb-8">
+            DESIGNED BY SOCRATES <span className="mx-4">•</span> TASK REVEAL SUITE
+          </p>
+
+          <h1
+            ref={textRef}
+            className="text-4xl md:text-6xl lg:text-7xl font-heading font-extrabold text-black leading-[1.1] tracking-tight drop-shadow-sm mb-10"
+          >
+            THE CONTENT SYSTEM<br />
+            BEHIND THE BRANDS<br />
+            YOUR INDUSTRY <span className="relative inline-block">
+              TALKS ABOUT.
+              <span className="absolute left-0 bottom-[-4px] w-full h-[6px] bg-orange-500 z-[-1]" />
+            </span>
+          </h1>
+
+          <p className="text-black/50 text-sm md:text-base font-[family-name:var(--font-mono)] max-w-3xl leading-relaxed mx-auto">
+            A high-precision modular workspace supporting custom shadcn paths, Tailwind<br />
+            styling setups and strong Typescript structures.
+          </p>
+        </div>
+
+        {/* Bottom Text */}
+        <div className="absolute bottom-10 w-full flex flex-col items-center justify-center z-20 pointer-events-none">
+          <span className="text-orange-500 flex items-center gap-2 text-[0.55rem] tracking-[0.2em] uppercase mb-4 font-[family-name:var(--font-mono)]">
+            <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
+            DRIBBLE MOUSE OVER SCREEN TO SCRATCH CANVAS & UNCOVER COLOR STORM
+          </span>
+          <span className="text-black/40 text-[0.65rem] tracking-[0.3em] uppercase mb-2 font-[family-name:var(--font-mono)]">
+            SCROLL: DOWN TO DISCOVER
+          </span>
+          <ArrowDown className="size-3 text-black/40 animate-bounce mt-2" />
+        </div>
 
         <div
           ref={navItemsRef}

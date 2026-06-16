@@ -1,129 +1,160 @@
 "use client";
 
 import { useRef, useEffect } from "react";
-import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { cn } from "@/lib/utils";
 
-const caseStudies = [
+const metrics = [
   {
-    client: "TechFlow",
-    title: "From 0 to $2M ARR via Organic TikTok",
-    description: "We completely revamped TechFlow's brand identity and launched a 90-day viral scripting campaign that resulted in a massive surge in qualified leads.",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2426&ixlib=rb-4.0.3",
-    metrics: ["+400% Traffic", "$2M ARR", "1.2M Views"]
+    id: "01",
+    label: "METRIC_LAYER",
+    title: "Average Reach Growth",
+    value: "420%",
+    detail: "120-Day Cycle",
+    confidence: "99.8%",
+    scale: "x4.5 Multi",
   },
   {
-    client: "Aura Skincare",
-    title: "Cinematic Launch that Sold Out in 4 Hours",
-    description: "A premium product needed a premium launch. We shot a 60-second cinematic ad and executed a multi-platform distribution strategy.",
-    image: "https://images.unsplash.com/photo-1556228578-0d85b1a4d571?auto=format&fit=crop&q=80&w=2574&ixlib=rb-4.0.3",
-    metrics: ["Sold Out", "8x ROAS", "Brand Elevated"]
-  }
+    id: "02",
+    label: "METRIC_LAYER",
+    title: "Client Revenue Multiplier",
+    value: "8x",
+    detail: "ROAS Average",
+    confidence: "97.2%",
+    scale: "Across Verticals",
+  },
+  {
+    id: "03",
+    label: "METRIC_LAYER",
+    title: "Industries Disrupted",
+    value: "15+",
+    detail: "+75% Max",
+    confidence: "Direct",
+    scale: "Multi-Sector",
+  },
+  {
+    id: "04",
+    label: "METRIC_LAYER",
+    title: "Founder Capital Unlocked",
+    value: "$140M+",
+    detail: "+140% Max",
+    confidence: "Verified",
+    scale: "Aggregate",
+  },
+];
+
+const testimonials = [
+  {
+    name: "Dr. Alistair Vance",
+    company: "Aperture Grid",
+    quote: "Socrates didn't just rebrand us — they recalibrated the entire market's perception. Our Series B deck became a weapon.",
+  },
+  {
+    name: "Hana Nakajima",
+    company: "Krypton Labs",
+    quote: "The speed and quality are unmatched. Within weeks, we had a visual identity that Fortune 500 companies spend years developing.",
+  },
+  {
+    name: "Jack Thornton",
+    company: "Helius Compute",
+    quote: "Their cinematic approach to content turned our product demos into viral moments. 2.4M organic views in the first month.",
+  },
 ];
 
 export function CaseStudies() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const studiesRef = useRef<(HTMLDivElement | null)[]>([]);
+  const metricsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    studiesRef.current.forEach((study, idx) => {
-      if (!study) return;
-      const imageWrapper = study.querySelector(".image-wrapper");
-      const content = study.querySelector(".content-wrapper");
-
-      // Parallax effect on image
-      if (imageWrapper) {
-        gsap.fromTo(imageWrapper,
-          { y: 50 },
-          {
-            y: -50,
-            ease: "none",
-            scrollTrigger: {
-              trigger: study,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: true,
-            }
+    metricsRef.current.forEach((el, idx) => {
+      if (!el) return;
+      gsap.fromTo(el,
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          delay: idx * 0.1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: el,
+            start: "top 85%",
           }
-        );
-      }
-
-      // Content fade in
-      if (content) {
-        gsap.fromTo(content,
-          { opacity: 0, x: idx % 2 === 0 ? 50 : -50 },
-          {
-            opacity: 1,
-            x: 0,
-            duration: 0.8,
-            ease: "power2.out",
-            scrollTrigger: {
-              trigger: study,
-              start: "top 60%",
-            }
-          }
-        );
-      }
+        }
+      );
     });
   }, []);
 
   return (
-    <section ref={sectionRef} className="w-full py-32 px-6 bg-[#050505]">
-      <div className="max-w-7xl mx-auto flex flex-col gap-32">
-        <div className="text-center">
-          <h2 className="text-4xl md:text-6xl font-heading font-semibold text-white">
-            Proof of Work
-          </h2>
+    <section ref={sectionRef} className="w-full py-32 px-6 shimmer-edge" style={{ background: "var(--background)" }}>
+      <div className="max-w-7xl mx-auto">
+
+        {/* Section header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="section-label">Performance Metrics</div>
+          <span className="mono-meta">Verified via Stripe / GA / Hubspot</span>
+        </div>
+        
+        <h2 className="text-4xl md:text-6xl font-semibold text-white mb-16 tracking-tight">
+          Proof of Work
+        </h2>
+
+        {/* Metrics grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-24">
+          {metrics.map((metric, idx) => (
+            <div 
+              key={idx}
+              ref={(el) => { metricsRef.current[idx] = el; }}
+              className="tech-card p-6 relative overflow-hidden"
+            >
+              {idx === 0 && (
+                <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-accent via-accent to-transparent" />
+              )}
+              
+              <div className="flex items-center gap-2 mb-6">
+                <span className="mono-meta text-[0.6rem]">{metric.id}</span>
+                <span className="mono-meta text-[0.6rem]">{metric.label}</span>
+              </div>
+
+              <p className="text-4xl md:text-5xl font-bold text-white mb-2 tracking-tight">{metric.value}</p>
+              <p className="text-white/70 font-medium text-sm mb-1">{metric.title}</p>
+              <p className="mono-meta text-[0.6rem] mb-6">{metric.detail}</p>
+
+              <div className="flex gap-6 pt-4" style={{ borderTop: "1px solid var(--border-subtle)" }}>
+                <div>
+                  <span className="mono-meta block text-[0.55rem] mb-0.5">Confidence</span>
+                  <span className="text-accent text-xs font-medium font-[family-name:var(--font-mono)]">{metric.confidence}</span>
+                </div>
+                <div>
+                  <span className="mono-meta block text-[0.55rem] mb-0.5">Index Scale</span>
+                  <span className="text-white/60 text-xs font-[family-name:var(--font-mono)]">{metric.scale}</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
 
-        {caseStudies.map((study, idx) => (
-          <div 
-            key={idx}
-            ref={(el) => { studiesRef.current[idx] = el; }}
-            className={cn(
-              "flex flex-col lg:flex-row gap-12 lg:gap-24 items-center",
-              idx % 2 !== 0 && "lg:flex-row-reverse"
-            )}
-          >
-            {/* Image Side */}
-            <div className="w-full lg:w-1/2 overflow-hidden rounded-3xl h-[400px] md:h-[600px] relative">
-              <div className="image-wrapper absolute inset-0 -top-20 -bottom-20 w-full">
-                <Image
-                  src={study.image}
-                  alt={study.title}
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-black/40" />
-              </div>
-            </div>
+        {/* Testimonials */}
+        <div className="mb-8">
+          <div className="section-label mb-10">Verified_Endorsements</div>
+        </div>
 
-            {/* Content Side */}
-            <div className="content-wrapper w-full lg:w-1/2 flex flex-col justify-center">
-              <span className="text-accent font-bold tracking-widest uppercase mb-4 text-sm">
-                {study.client}
-              </span>
-              <h3 className="text-3xl md:text-5xl font-heading font-medium text-white mb-6 leading-tight">
-                {study.title}
-              </h3>
-              <p className="text-white/60 text-lg md:text-xl leading-relaxed mb-8">
-                {study.description}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {testimonials.map((t, idx) => (
+            <div key={idx} className="tech-card corner-markers p-8">
+              <p className="text-white/60 text-sm leading-relaxed mb-8 italic">
+                &ldquo;{t.quote}&rdquo;
               </p>
-              
-              <div className="flex flex-wrap gap-4">
-                {study.metrics.map((metric, mIdx) => (
-                  <div key={mIdx} className="bg-white/5 border border-white/10 rounded-full px-5 py-2 text-white/90 text-sm font-medium">
-                    {metric}
-                  </div>
-                ))}
+              <div className="pt-4" style={{ borderTop: "1px solid var(--border-subtle)" }}>
+                <p className="text-white font-medium text-sm">{t.name}</p>
+                <p className="mono-meta text-[0.6rem] mt-1">{t.company}</p>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+
       </div>
     </section>
   );

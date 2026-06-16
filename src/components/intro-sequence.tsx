@@ -51,7 +51,7 @@ export function IntroSequence() {
           left: "50%",
           xPercent: -50,
           borderRadius: "0px",
-          backgroundColor: "#050505",
+          backgroundColor: "#0a0a0f",
           border: "0px solid rgba(255, 255, 255, 0)",
         },
         {
@@ -59,7 +59,7 @@ export function IntroSequence() {
           height: "64px",
           top: isDesktop ? "24px" : "16px",
           borderRadius: "32px",
-          backgroundColor: "rgba(10, 10, 10, 0.6)",
+          backgroundColor: "rgba(10, 10, 15, 0.7)",
           backdropFilter: "blur(12px)",
           border: "1px solid rgba(255, 255, 255, 0.1)",
           ease: "power2.inOut",
@@ -117,7 +117,7 @@ export function IntroSequence() {
       {/* Pinned Hero Container */}
       <section 
         ref={containerRef} 
-        className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050505] pt-16"
+        className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden pt-16" style={{ background: "var(--background)" }}
       >
         {/* Dotted Background */}
         <div 
@@ -131,13 +131,13 @@ export function IntroSequence() {
         />
         
         {/* Glowing Blob */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent/20 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
 
         {/* Hero Content */}
         <div className="relative z-10 flex flex-col items-center justify-center max-w-5xl px-6 text-center">
           <h2 
             ref={heroTextRef}
-            className="text-5xl md:text-7xl lg:text-8xl font-heading font-semibold text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/60 mb-8 leading-[1.1] relative"
+            className="text-5xl md:text-7xl lg:text-8xl font-semibold text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50 mb-8 leading-[1.05] tracking-tight relative"
           >
             Craft the Identity that closes the round
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-accent/30 to-transparent bg-clip-text text-transparent opacity-50 blur-sm pointer-events-none" />
@@ -158,20 +158,22 @@ export function IntroSequence() {
         className="fixed z-50 overflow-hidden flex items-center justify-center origin-center pointer-events-auto shadow-[0_10px_40px_rgba(0,0,0,0.5)]"
         style={{ width: "100vw", height: "100vh", top: 0, left: "50%", transform: "translateX(-50%)" }}
       >
-        <Image
-          ref={imageRef}
-          src="/frameone_circuit.png"
-          alt="3D Digital Circuit"
-          fill
-          className="object-cover opacity-80"
-          priority
-        />
+        <div className="absolute inset-0 w-full h-full">
+          <Image
+            ref={imageRef}
+            src="/frame.png"
+            alt="3D Digital Circuit"
+            fill
+            className="object-cover opacity-80"
+            priority
+          />
+        </div>
         
         <h1
           ref={textRef}
-          className="absolute text-3xl md:text-5xl lg:text-7xl font-heading font-medium text-white text-center w-full px-6 leading-tight tracking-tight drop-shadow-2xl"
+          className="absolute text-3xl md:text-5xl lg:text-7xl font-heading font-medium text-white text-center w-full px-6 leading-tight tracking-tight drop-shadow-2xl translate-y-6 md:translate-y-10"
         >
-          Stop burning cash on content that doesn't work.
+          Stop burning cash on<br />content that doesn't work.
         </h1>
 
         <div

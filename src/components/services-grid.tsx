@@ -3,21 +3,32 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { CheckCircle2 } from "lucide-react";
 
-const services = [
-  "Brand Animations",
-  "Personal Branding",
-  "Launch Videos",
-  "High-Converting Ads",
-  "YouTube Management",
-  "Instagram Reels",
-  "LinkedIn Authority",
-  "Cinematic Shoots",
-  "Viral Scripting",
-  "Influencer Marketing",
-  "Thumbnails & Hooks",
-  "Content Repurposing"
+const capabilities = [
+  {
+    id: "01",
+    title: "BRAND DEPLOYMENT",
+    description: "End-to-end launching identities & clean codebase blueprints.",
+    services: ["Brand Animations", "Personal Branding", "Launch Videos"],
+  },
+  {
+    id: "02",
+    title: "CINEMATOGRAPHY",
+    description: "Precision-timed product cinemaps mapping spatial structures.",
+    services: ["Cinematic Shoots", "High-Converting Ads", "Thumbnails & Hooks"],
+  },
+  {
+    id: "03",
+    title: "AI STRATEGY LAB",
+    description: "Interactive generative scripts for smart context categorization.",
+    services: ["YouTube Management", "Viral Scripting", "Content Repurposing"],
+  },
+  {
+    id: "04",
+    title: "RAPID EXECUTION",
+    description: "Highly responsive frameworks designed for ultimate loading speeds.",
+    services: ["Instagram Reels", "LinkedIn Authority", "Influencer Marketing"],
+  }
 ];
 
 export function ServicesGrid() {
@@ -29,83 +40,76 @@ export function ServicesGrid() {
 
     if (!containerRef.current) return;
 
-    // We create a stagger animation as user scrolls into the grid
     cardsRef.current.forEach((card, idx) => {
       if (!card) return;
       
-      const icon = card.querySelector(".tick-icon");
-      
       gsap.fromTo(card,
-        { opacity: 0, scale: 0.8, y: 50 },
+        { opacity: 0, y: 40 },
         {
           opacity: 1,
-          scale: 1,
           y: 0,
           duration: 0.5,
-          ease: "back.out(1.5)",
+          delay: idx * 0.1,
+          ease: "power2.out",
           scrollTrigger: {
-            trigger: card,
-            start: "top 85%",
+            trigger: containerRef.current,
+            start: "top 70%",
             toggleActions: "play none none reverse",
           }
         }
       );
-
-      if (icon) {
-        gsap.fromTo(icon,
-          { scale: 0, opacity: 0 },
-          {
-            scale: 1,
-            opacity: 1,
-            duration: 0.4,
-            delay: 0.3,
-            ease: "back.out(2)",
-            scrollTrigger: {
-              trigger: card,
-              start: "top 85%",
-              toggleActions: "play none none reverse",
-            }
-          }
-        );
-      }
     });
   }, []);
 
   return (
-    <section ref={containerRef} className="w-full py-32 px-6 bg-[#050505] relative border-t border-white/5">
-      <div className="max-w-6xl mx-auto">
+    <section ref={containerRef} className="w-full py-32 px-6 shimmer-edge" style={{ background: "var(--background)" }}>
+      <div className="max-w-7xl mx-auto">
         
-        {/* Problem -> Solution Header */}
-        <div className="text-center mb-24">
-          <div className="inline-block border border-white/10 rounded-full px-4 py-1.5 mb-6 bg-white/5">
-            <span className="text-sm text-white/60">The Problem</span>
-          </div>
-          <h2 className="text-3xl md:text-5xl font-heading font-medium text-white/50 mb-8 max-w-3xl mx-auto">
+        {/* Problem → Solution Header */}
+        <div className="text-center mb-20">
+          <span className="mono-meta inline-block mb-4 px-3 py-1.5 rounded" style={{ background: "rgba(255,255,255,0.03)", border: "1px solid var(--border-subtle)" }}>
+            The Problem
+          </span>
+          <h2 className="text-3xl md:text-5xl font-medium text-white/40 mb-8 max-w-3xl mx-auto tracking-tight leading-tight">
             You have a world-class product, but your content makes you look like a beginner.
           </h2>
           
-          <div className="w-px h-16 bg-gradient-to-b from-transparent via-accent to-transparent mx-auto my-8" />
+          <div className="w-px h-12 mx-auto my-6" style={{ background: "linear-gradient(to bottom, transparent, var(--accent), transparent)" }} />
           
-          <div className="inline-block border border-accent/20 rounded-full px-4 py-1.5 mb-6 bg-accent/10">
-            <span className="text-sm text-accent font-medium">The Solution</span>
-          </div>
-          <h3 className="text-4xl md:text-6xl font-heading font-semibold text-white">
+          <span className="mono-meta inline-block mb-4 px-3 py-1.5 rounded" style={{ background: "rgba(227, 46, 14, 0.06)", border: "1px solid rgba(227, 46, 14, 0.15)" }}>
+            <span className="text-accent">The Solution</span>
+          </span>
+          <h3 className="text-4xl md:text-6xl font-semibold text-white tracking-tight">
             The Complete Arsenal.
           </h3>
         </div>
 
-        {/* 3x4 Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service, idx) => (
+        {/* Capability cards row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {capabilities.map((cap, idx) => (
             <div
               key={idx}
               ref={(el) => { cardsRef.current[idx] = el; }}
-              className="bg-[#0a0a0a] border border-white/10 rounded-2xl p-6 flex items-center justify-between group hover:border-accent/50 transition-colors"
+              className="tech-card corner-markers p-6 group"
             >
-              <span className="text-lg font-medium text-white/80 group-hover:text-white transition-colors">
-                {service}
+              <span className={`bracket-label text-xs block mb-5 ${idx === 3 ? "!text-accent" : ""}`}>
+                [ {cap.id}_{cap.title} ]
               </span>
-              <CheckCircle2 className="tick-icon size-6 text-accent opacity-0" />
+              <p className="text-white/50 text-sm leading-relaxed mb-6">
+                {cap.description}
+              </p>
+              
+              {/* Service list */}
+              <div className="space-y-2 pt-4" style={{ borderTop: "1px solid var(--border-subtle)" }}>
+                {cap.services.map((service, sIdx) => (
+                  <div key={sIdx} className="flex items-center gap-2.5">
+                    <span className="w-1 h-1 rounded-full bg-accent flex-shrink-0" />
+                    <span className="text-white/60 text-xs font-[family-name:var(--font-mono)] tracking-wide">
+                      {service}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>

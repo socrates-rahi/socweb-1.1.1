@@ -4,65 +4,49 @@ import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Zap, Sparkles, Cpu } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const factors = [
   {
     title: "One of the fastest operations",
     description: "In the industry, speed is leverage. We execute at breakneck speeds without compromising the premium quality your brand demands.",
-    icon: <Zap className="size-6 text-accent" />
+    icon: <Zap className="size-5 text-accent" />,
+    tag: "VELOCITY_INDEX",
   },
   {
     title: "Creative Crafting",
     description: "Every piece of content, video, and shoot is meticulously crafted. We reject boring trends and outdated conventions to build bespoke narratives.",
-    icon: <Sparkles className="size-6 text-accent" />
+    icon: <Sparkles className="size-5 text-accent" />,
+    tag: "CRAFT_PROTOCOL",
   },
   {
-    title: "AI Integrated Workflow",
+    title: "AI ready frameworks",
     description: "Our efficient, secure, and future-ready pipeline is powered by AI. We don't just adapt to the future; we basically build it.",
-    icon: <Cpu className="size-6 text-accent" />
+    icon: <Cpu className="size-5 text-accent" />,
+    tag: "AI_ENGINE",
   }
 ];
 
 export function WhyUsSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const lineRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    if (!sectionRef.current || !lineRef.current) return;
+    if (!sectionRef.current) return;
 
-    // Line drawing animation
-    gsap.fromTo(lineRef.current, 
-      { height: "0%" },
-      {
-        height: "100%",
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top center",
-          end: "bottom center",
-          scrub: true,
-        }
-      }
-    );
-
-    // Cards revealing animation
     cardsRef.current.forEach((card, index) => {
       if (!card) return;
       gsap.fromTo(card,
-        { opacity: 0, x: index % 2 === 0 ? 50 : -50, scale: 0.95 },
+        { opacity: 0, y: 40 },
         {
           opacity: 1,
-          x: 0,
-          scale: 1,
+          y: 0,
           duration: 0.6,
           ease: "power2.out",
           scrollTrigger: {
             trigger: card,
-            start: "top 70%",
+            start: "top 80%",
             toggleActions: "play none none reverse",
           }
         }
@@ -72,54 +56,69 @@ export function WhyUsSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="relative w-full py-32 px-6 bg-[#050505] overflow-hidden">
-      <div className="max-w-6xl mx-auto flex flex-col items-center">
-        
-        <div className="text-center mb-24">
-          <h2 className="text-4xl md:text-6xl font-heading font-semibold text-white mb-6">
-            Okay, but <span className="text-accent italic">why us??</span>
-          </h2>
-          <p className="text-lg md:text-xl text-white/60 max-w-2xl mx-auto">
-            In a pool of tons of agencies, this is why we stand out. We don't just deliver; we dominate.
-          </p>
-        </div>
+    <section ref={sectionRef} className="relative w-full py-32 px-6 shimmer-edge" style={{ background: "var(--background)" }}>
+      <div className="max-w-7xl mx-auto">
 
-        <div className="relative w-full max-w-4xl mx-auto">
-          {/* The revealing line */}
-          <div className="absolute left-[28px] md:left-1/2 top-0 bottom-0 w-[2px] bg-white/10 -translate-x-1/2 rounded-full" />
-          <div 
-            ref={lineRef}
-            className="absolute left-[28px] md:left-1/2 top-0 w-[2px] bg-gradient-to-b from-accent to-accent-dark -translate-x-1/2 rounded-full shadow-[0_0_15px_rgba(255,59,5,0.5)]" 
-          />
+        {/* Section Header with technical labels */}
+        <div className="flex flex-col md:flex-row justify-between items-start gap-8 mb-20">
+          <div className="flex-1">
+            <div className="section-label mb-6">Bespoke Production Engine</div>
+            <h2 className="text-4xl md:text-6xl font-semibold text-white mb-6 tracking-tight">
+              Okay, but <span className="text-accent italic">why us??</span>
+            </h2>
+            <p className="text-lg text-white/50 max-w-2xl leading-relaxed">
+              We operate as an elite core squad for early founders, engineering hyper-stylized digital blueprints, premium layout systems, and cinematic market narratives.
+            </p>
+          </div>
 
-          <div className="flex flex-col gap-16 md:gap-24 relative z-10">
-            {factors.map((factor, idx) => (
-              <div 
-                key={idx} 
-                ref={(el) => { cardsRef.current[idx] = el; }}
-                className={cn(
-                  "flex flex-col md:flex-row items-start md:items-center w-full gap-8 md:gap-16",
-                  idx % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                )}
-              >
-                {/* Node on the line */}
-                <div className="absolute left-[28px] md:left-1/2 w-4 h-4 rounded-full bg-[#050505] border-2 border-accent -translate-x-1/2 mt-6 md:mt-0 z-20 shadow-[0_0_10px_rgba(255,59,5,0.8)]" />
-
-                <div className={cn("w-full md:w-1/2 flex", idx % 2 === 0 ? "justify-end pl-16 md:pl-0 pr-0 md:pr-12" : "justify-start pl-16 md:pl-12 pr-0")}>
-                  <div className="bg-white/[0.03] border border-white/10 rounded-3xl p-8 backdrop-blur-sm hover:bg-white/[0.05] transition-colors w-full relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-accent/10 rounded-full blur-3xl -mr-10 -mt-10 group-hover:bg-accent/20 transition-colors" />
-                    <div className="bg-white/5 w-12 h-12 rounded-2xl flex items-center justify-center mb-6 border border-white/10">
-                      {factor.icon}
-                    </div>
-                    <h3 className="text-2xl font-heading font-medium text-white mb-4">{factor.title}</h3>
-                    <p className="text-white/60 leading-relaxed">{factor.description}</p>
-                  </div>
-                </div>
-                <div className="hidden md:block w-1/2" />
-              </div>
-            ))}
+          <div className="flex-shrink-0 md:text-right">
+            <span className="bracket-label">↳ [ STUDIO THESIS ]</span>
+            <p className="text-white/40 text-sm mt-3 max-w-md leading-relaxed font-[family-name:var(--font-mono)]">
+              We completely bypass agency fluff and generic consulting. Instead, we design, code, and deploy high-fidelity brand assets and tactile visual systems.
+            </p>
           </div>
         </div>
+
+        {/* Technical metadata strip */}
+        <div className="flex flex-wrap gap-x-16 gap-y-4 mb-16 pb-8 border-b" style={{ borderColor: "var(--border-subtle)" }}>
+          <div>
+            <span className="mono-meta block mb-1">Design Velocity</span>
+            <span className="text-white font-medium text-sm font-[family-name:var(--font-mono)] tracking-wide uppercase">Weeks, Not Months</span>
+          </div>
+          <div>
+            <span className="mono-meta block mb-1">Engagement Model</span>
+            <span className="text-white font-medium text-sm font-[family-name:var(--font-mono)] tracking-wide uppercase">Direct-to-Founder</span>
+          </div>
+          <div>
+            <span className="mono-meta block mb-1">Quality Index</span>
+            <span className="text-white font-medium text-sm font-[family-name:var(--font-mono)] tracking-wide uppercase">Zero Compromise</span>
+          </div>
+        </div>
+
+        {/* Factor cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {factors.map((factor, idx) => (
+            <div
+              key={idx}
+              ref={(el) => { cardsRef.current[idx] = el; }}
+              className="tech-card corner-markers p-8 group"
+            >
+              <div className="flex items-center justify-between mb-8">
+                <div className="w-11 h-11 rounded-lg flex items-center justify-center" style={{ background: "rgba(227, 46, 14, 0.08)", border: "1px solid rgba(227, 46, 14, 0.15)" }}>
+                  {factor.icon}
+                </div>
+                <span className="status-badge">{factor.tag}</span>
+              </div>
+              <h3 className="text-xl font-medium text-white mb-4 group-hover:text-accent transition-colors">
+                {factor.title}
+              </h3>
+              <p className="text-white/45 leading-relaxed text-sm">
+                {factor.description}
+              </p>
+            </div>
+          ))}
+        </div>
+
       </div>
     </section>
   );

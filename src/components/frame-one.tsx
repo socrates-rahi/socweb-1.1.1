@@ -76,21 +76,23 @@ export function FrameOne() {
         ref={frameRef}
         className="fixed top-0 left-0 w-full h-full bg-[#050505] overflow-hidden flex items-center justify-center origin-center pointer-events-auto"
       >
+        <div className="absolute inset-0 w-full h-full">
         <Image
           ref={imageRef}
-          src="/frameone_circuit.png"
+          src="/frame.png"
           alt="3D Digital Circuit"
           fill
           className="object-cover opacity-80"
           priority
         />
+        </div>
         
         {/* FrameOne Text */}
         <h1
           ref={textRef}
-          className="absolute text-3xl md:text-5xl lg:text-7xl font-heading font-medium text-white text-center max-w-4xl px-6 leading-tight tracking-tight drop-shadow-2xl"
+          className="absolute text-3xl md:text-5xl lg:text-7xl font-heading font-medium text-white text-center w-full px-6 leading-tight tracking-tight drop-shadow-2xl translate-y-6 md:translate-y-10"
         >
-          Stop burning cash on content that doesn't work.
+          Stop burning cash on<br />content that doesn't work.
         </h1>
 
         {/* Morphed Navbar Content */}

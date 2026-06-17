@@ -61,6 +61,34 @@ export function InkReveal({
 
   const mc = maskColor;
 
+  const drawBackground = useCallback((ctx: CanvasRenderingContext2D, w: number, h: number) => {
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = `rgb(${mc[0]},${mc[1]},${mc[2]})`;
+    ctx.fillRect(0, 0, w, h);
+
+    // Draw the premium grid directly on the mask
+    const gridSize = 64;
+    ctx.lineWidth = 2; // Not thin
+    ctx.strokeStyle = "rgba(0, 0, 0, 0.06)";
+    ctx.beginPath();
+    for (let x = (w % gridSize) / 2; x <= w; x += gridSize) {
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, h);
+    }
+    for (let y = (h % gridSize) / 2; y <= h; y += gridSize) {
+      ctx.moveTo(0, y);
+      ctx.lineTo(w, y);
+    }
+    ctx.stroke();
+
+    // Smooth intersections by fading out the grid radially
+    const rg = ctx.createRadialGradient(w/2, h/2, Math.min(w,h) * 0.2, w/2, h/2, Math.max(w,h) * 0.6);
+    rg.addColorStop(0, `rgba(${mc[0]},${mc[1]},${mc[2]},0)`);
+    rg.addColorStop(1, `rgba(${mc[0]},${mc[1]},${mc[2]},1)`);
+    ctx.fillStyle = rg;
+    ctx.fillRect(0, 0, w, h);
+  }, [mc]);
+
   const resize = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -79,10 +107,8 @@ export function InkReveal({
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.globalCompositeOperation = "source-over";
-    ctx.fillStyle = `rgb(${mc[0]},${mc[1]},${mc[2]})`;
-    ctx.fillRect(0, 0, w, h);
-  }, [mc]);
+    drawBackground(ctx, w, h);
+  }, [drawBackground]);
 
   const carveInk = useCallback(
     (
@@ -167,9 +193,7 @@ export function InkReveal({
     const now = performance.now();
     const stamps = stampsRef.current;
 
-    ctx.globalCompositeOperation = "source-over";
-    ctx.fillStyle = `rgb(${mc[0]},${mc[1]},${mc[2]})`;
-    ctx.fillRect(0, 0, w, h);
+    drawBackground(ctx, w, h);
     ctx.globalCompositeOperation = "destination-out";
 
     for (let i = stamps.length - 1; i >= 0; i--) {

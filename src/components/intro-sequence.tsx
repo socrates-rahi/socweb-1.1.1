@@ -13,6 +13,7 @@ import { InkReveal } from "@/components/ui/ink-reveal";
 export function IntroSequence() {
   const containerRef = useRef<HTMLDivElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
+  const frameVisualsRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLHeadingElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const navItemsRef = useRef<HTMLDivElement>(null);
@@ -68,11 +69,16 @@ export function IntroSequence() {
           ease: "power2.inOut",
           duration: 1,
         }, 0)
+        .to(frameVisualsRef.current, {
+          opacity: 0,
+          duration: 0.9,
+          ease: "power2.inOut",
+        }, 0)
         .to(textRef.current, {
           opacity: 0,
           scale: 0.8,
-          duration: 0.3,
-          ease: "power1.inOut",
+          duration: 0.5,
+          ease: "power2.inOut",
         }, 0)
         .to(imageRef.current, {
           opacity: 0,
@@ -162,31 +168,29 @@ export function IntroSequence() {
       {/* FrameOne floating navbar overlay */}
       <div
         ref={frameRef}
-        className="fixed z-50 overflow-hidden flex items-center justify-center origin-center pointer-events-auto shadow-[0_10px_40px_rgba(0,0,0,0.1)] bg-white"
+        className="fixed z-50 overflow-hidden flex items-center justify-center origin-center pointer-events-auto shadow-[0_10px_40px_rgba(0,0,0,0.1)]"
         style={{ width: "100vw", height: "100vh", top: 0, left: "50%", transform: "translateX(-50%)" }}
       >
-        {/* White Grid Background (under everything) */}
-        <div className="absolute inset-0 bg-white z-0" />
-        <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:24px_24px] opacity-100 z-0" />
+        <div ref={frameVisualsRef} className="absolute inset-0 w-full h-full flex items-center justify-center">
+          <div className="absolute inset-0 bg-white z-0" />
 
-        {/* The Glowing Shader (revealed by ink) - Custom High-Performance CSS Shader */}
-        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden bg-[#2a1122]">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,#b76e79_0%,transparent_50%)] animate-pulse duration-1000 opacity-90 blur-2xl" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_80%_70%,#6b21a8_0%,transparent_50%)] animate-pulse duration-1000 opacity-80 blur-2xl delay-700" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_60%,#c2410c_0%,transparent_60%)] animate-pulse duration-1000 opacity-80 blur-3xl delay-500" />
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_20%,#ca8a04_0%,transparent_40%)] animate-pulse duration-1000 opacity-70 blur-2xl delay-300" />
-          
-          {/* Moving background layer for extra depth */}
-          <div 
-            className="absolute -inset-[100%] opacity-40 blur-3xl"
-            style={{
-              background: "conic-gradient(from 0deg, #b76e79, #6b21a8, #ca8a04, #c2410c, #b76e79)",
-              animation: "spin 20s linear infinite",
-            }}
+          {/* Top Text */}
+          <h2 className="absolute top-8 w-full text-center text-black/80 font-bold text-sm md:text-base tracking-[0.2em] font-[family-name:var(--font-mono)] z-20 pointer-events-none">
+            SOCRATES STUDIO
+          </h2>
+
+        {/* The New Image Background (revealed by ink) */}
+        <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+          <Image
+            src="/frameone.jpg"
+            alt="Frame Background"
+            fill
+            className="object-cover"
+            priority
           />
         </div>
 
-        {/* The InkReveal Mask (White mask [255, 255, 255] to match frame background) */}
+        {/* The InkReveal Mask (includes built-in Grid) */}
         <div className="absolute inset-0 z-10">
           <InkReveal maskColor={[255, 255, 255]} />
         </div>
@@ -225,6 +229,7 @@ export function IntroSequence() {
             SCROLL: DOWN TO DISCOVER
           </span>
           <ArrowDown className="size-3 text-black/40 animate-bounce mt-2" />
+        </div>
         </div>
 
         <div

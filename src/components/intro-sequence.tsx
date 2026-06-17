@@ -37,8 +37,8 @@ export function IntroSequence() {
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top top",
-          end: "+=2200", // Increased scroll distance for text transitions
-          scrub: 1,
+          end: "+=1200", // Decreased scroll distance for faster transitions
+          scrub: 1.5, // Added slight scrub delay for inertia feel
           pin: true, // Pin the Hero Section
         },
       });
@@ -190,9 +190,9 @@ export function IntroSequence() {
           />
         </div>
 
-        {/* The InkReveal Mask (includes built-in Grid) */}
+        {/* The InkReveal Mask (includes built-in Grid or Image) */}
         <div className="absolute inset-0 z-10">
-          <InkReveal maskColor={[255, 255, 255]} />
+          <InkReveal maskColor={[255, 255, 255]} imageSrc="/whitefraame.jpg?v=2" />
         </div>
 
         {/* Center Content Group */}

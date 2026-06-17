@@ -4,6 +4,8 @@ import { useEffect, useRef, useCallback } from "react";
 interface InkRevealProps {
   /** RGB color of the mask overlay, e.g. [252, 250, 248] */
   maskColor?: [number, number, number];
+  /** Optional image to use as the mask overlay instead of a solid color */
+  imageSrc?: string;
   /** Radius of each ink stamp in px */
   brushSize?: number;
   /** How long each stamp lives before fading (ms) */
@@ -40,6 +42,7 @@ interface Stamp {
 
 export function InkReveal({
   maskColor = [252, 250, 248],
+  imageSrc,
   brushSize = 128,
   lifetime = 600,
   rStart = 10,
@@ -58,35 +61,57 @@ export function InkReveal({
   const runningRef = useRef(false);
   const lastPosRef = useRef<{ x: number; y: number } | null>(null);
   const dimsRef = useRef({ w: 0, h: 0 });
+  const imgRef = useRef<HTMLImageElement | null>(null);
 
   const mc = maskColor;
 
   const drawBackground = useCallback((ctx: CanvasRenderingContext2D, w: number, h: number) => {
     ctx.globalCompositeOperation = "source-over";
-    ctx.fillStyle = `rgb(${mc[0]},${mc[1]},${mc[2]})`;
-    ctx.fillRect(0, 0, w, h);
+    
+    if (imgRef.current) {
+      const img = imgRef.current;
+      const imgRatio = img.width / img.height;
+      const canvasRatio = w / h;
+      let renderW, renderH, renderX, renderY;
+      
+      if (imgRatio < canvasRatio) {
+          renderW = w;
+          renderH = w / imgRatio;
+          renderX = 0;
+          renderY = (h - renderH) / 2;
+      } else {
+          renderW = h * imgRatio;
+          renderH = h;
+          renderX = (w - renderW) / 2;
+          renderY = 0;
+      }
+      ctx.drawImage(img, renderX, renderY, renderW, renderH);
+    } else {
+      ctx.fillStyle = `rgb(${mc[0]},${mc[1]},${mc[2]})`;
+      ctx.fillRect(0, 0, w, h);
 
-    // Draw the premium grid directly on the mask
-    const gridSize = 64;
-    ctx.lineWidth = 2; // Not thin
-    ctx.strokeStyle = "rgba(0, 0, 0, 0.06)";
-    ctx.beginPath();
-    for (let x = (w % gridSize) / 2; x <= w; x += gridSize) {
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, h);
-    }
-    for (let y = (h % gridSize) / 2; y <= h; y += gridSize) {
-      ctx.moveTo(0, y);
-      ctx.lineTo(w, y);
-    }
-    ctx.stroke();
+      // Draw the premium grid directly on the mask
+      const gridSize = 64;
+      ctx.lineWidth = 2; // Not thin
+      ctx.strokeStyle = "rgba(0, 0, 0, 0.06)";
+      ctx.beginPath();
+      for (let x = (w % gridSize) / 2; x <= w; x += gridSize) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+      }
+      for (let y = (h % gridSize) / 2; y <= h; y += gridSize) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+      }
+      ctx.stroke();
 
-    // Smooth intersections by fading out the grid radially
-    const rg = ctx.createRadialGradient(w/2, h/2, Math.min(w,h) * 0.2, w/2, h/2, Math.max(w,h) * 0.6);
-    rg.addColorStop(0, `rgba(${mc[0]},${mc[1]},${mc[2]},0)`);
-    rg.addColorStop(1, `rgba(${mc[0]},${mc[1]},${mc[2]},1)`);
-    ctx.fillStyle = rg;
-    ctx.fillRect(0, 0, w, h);
+      // Smooth intersections by fading out the grid radially
+      const rg = ctx.createRadialGradient(w/2, h/2, Math.min(w,h) * 0.2, w/2, h/2, Math.max(w,h) * 0.6);
+      rg.addColorStop(0, `rgba(${mc[0]},${mc[1]},${mc[2]},0)`);
+      rg.addColorStop(1, `rgba(${mc[0]},${mc[1]},${mc[2]},1)`);
+      ctx.fillStyle = rg;
+      ctx.fillRect(0, 0, w, h);
+    }
   }, [mc]);
 
   const resize = useCallback(() => {
@@ -109,6 +134,17 @@ export function InkReveal({
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     drawBackground(ctx, w, h);
   }, [drawBackground]);
+
+  useEffect(() => {
+    if (imageSrc) {
+      const img = new window.Image();
+      img.src = imageSrc;
+      img.onload = () => {
+        imgRef.current = img;
+        resize(); // trigger a redraw with the image once loaded
+      };
+    }
+  }, [imageSrc, resize]);
 
   const carveInk = useCallback(
     (
@@ -184,7 +220,7 @@ export function InkReveal({
     [addStamp, stampStep]
   );
 
-  const loop = useCallback(() => {
+  const loop = useCallback(function animationLoop() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -209,11 +245,11 @@ export function InkReveal({
     }
 
     if (stamps.length) {
-      requestAnimationFrame(loop);
+      requestAnimationFrame(animationLoop);
     } else {
       runningRef.current = false;
     }
-  }, [carveInk, mc, lifetime, rStart]);
+  }, [carveInk, drawBackground, lifetime, rStart]);
 
   const startLoop = useCallback(() => {
     if (!runningRef.current) {

@@ -32,13 +32,24 @@
   }
 }
 
+@property --border-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0turn;
+}
+
+@keyframes spin-gradient {
+  from { --border-angle: 0turn; }
+  to { --border-angle: 1turn; }
+}
+
 :root {
   --background: #0a0a0f;
   --foreground: #ffffff;
   --accent: #E32E0E;
   --accent-dark: #c42000;
   --bg-card: #111116;
-  --bg-card-hover: #16161c;
+  --bg-card-hover: #1a1a24;
   --border-subtle: rgba(255, 255, 255, 0.06);
   --border-medium: rgba(255, 255, 255, 0.10);
   --text-muted: rgba(255, 255, 255, 0.45);
@@ -128,12 +139,39 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
 }
 
 .tech-card:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-medium);
+  border-color: transparent;
+  background-image: linear-gradient(var(--bg-card-hover), var(--bg-card-hover)), conic-gradient(from var(--border-angle), rgba(227, 46, 14, 0.2) 0%, rgba(227, 46, 14, 1) 30%, rgba(138, 43, 226, 1) 70%, rgba(227, 46, 14, 0.2) 100%);
+  background-clip: padding-box, border-box;
+  background-origin: padding-box, border-box;
+  animation: spin-gradient 3s linear infinite;
+  box-shadow: 0 0 15px rgba(227, 46, 14, 0.15);
+  transform: translateY(-2px);
+}
+
+/* Scale main text inside the card on hover */
+.tech-card > p, 
+.tech-card > h3, 
+.tech-card > .bracket-label,
+.tech-card > h4 {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease;
+  transform-origin: left center;
+  display: inline-block; /* ensures transform works properly on spans like bracket-label */
+}
+
+.tech-card > p {
+  display: block; /* p tags should remain block */
+}
+
+.tech-card:hover > p, 
+.tech-card:hover > h3, 
+.tech-card:hover > .bracket-label,
+.tech-card:hover > h4 {
+  transform: scale(1.03);
 }
 
 /* Corner markers on cards */

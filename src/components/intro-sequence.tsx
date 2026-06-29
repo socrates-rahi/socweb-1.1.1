@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
@@ -18,7 +19,22 @@ export function IntroSequence() {
   const imageRef = useRef<HTMLImageElement>(null);
   const navItemsRef = useRef<HTMLDivElement>(null);
   const heroTextRef = useRef<HTMLHeadingElement>(null);
-  const heroSubtextRef = useRef<HTMLParagraphElement>(null);
+  const heroSubtextRef = useRef<HTMLDivElement>(null);
+
+  const phrases = [
+    "converts your clients.",
+    "gets you funded.",
+    "makes you viral.",
+    "grows your brand."
+  ];
+  const [phraseIndex, setPhraseIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPhraseIndex((prev) => (prev + 1) % phrases.length);
+    }, 2500);
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -147,21 +163,45 @@ export function IntroSequence() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-accent/10 rounded-full blur-[120px] pointer-events-none mix-blend-screen" />
 
         {/* Hero Content */}
-        <div className="relative z-10 grid items-center justify-items-center max-w-5xl px-6 text-center w-full">
+        <div className="relative z-10 grid items-center justify-items-center max-w-7xl px-4 md:px-12 text-center w-full">
           <h2 
             ref={heroTextRef}
-            className="col-start-1 row-start-1 text-5xl md:text-7xl lg:text-8xl font-semibold text-transparent bg-clip-text bg-gradient-to-b from-foreground via-foreground to-foreground/50 leading-[1.05] tracking-tight relative"
+            className="col-start-1 row-start-1 text-4xl md:text-6xl lg:text-[4.25rem] xl:text-[4.75rem] font-bold leading-[1.1] tracking-tighter relative flex flex-col items-center w-full"
           >
-            Craft the Identity that closes the round
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-foreground via-foreground to-foreground/50 text-center pb-2 whitespace-nowrap">
+              We craft you an identity that
+            </span>
+            <span className="relative w-full h-[1.3em] overflow-visible block text-accent">
+              <AnimatePresence>
+                <motion.span
+                  key={phraseIndex}
+                  initial={{ y: 25, opacity: 0, filter: "blur(6px)" }}
+                  animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                  exit={{ y: -25, opacity: 0, filter: "blur(6px)" }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                  className="absolute inset-x-0 top-0 text-center bg-clip-text text-transparent bg-gradient-to-r from-accent to-[#E51A71]"
+                >
+                  {phrases[phraseIndex]}
+                </motion.span>
+              </AnimatePresence>
+            </span>
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-accent/30 to-transparent bg-clip-text text-transparent opacity-50 blur-sm pointer-events-none" />
           </h2>
 
-          <p 
+          <div 
             ref={heroSubtextRef}
-            className="col-start-1 row-start-1 text-lg md:text-2xl text-foreground/70 max-w-3xl leading-relaxed font-sans opacity-0 pointer-events-none"
+            className="col-start-1 row-start-1 flex flex-col items-center gap-8 opacity-0 pointer-events-none max-w-5xl"
           >
-            We are your complete creative partner. We craft high-end branding, shoot cinematic media, and run trend-optimized socials for startups, established businesses, and ambitious individuals who refuse to blend in.
-          </p>
+            <p className="text-xl md:text-2xl lg:text-[1.75rem] font-medium tracking-tight text-transparent bg-clip-text bg-gradient-to-b from-foreground to-foreground/60 leading-[1.35]">
+              We build brands that command <span className="text-transparent bg-clip-text bg-gradient-to-r from-accent to-[#E51A71]">attention.</span> As your end-to-end creative engine, we craft cinematic content and strategic narratives that give early startups and D2C/SaaS brands the visual authority to dominate their market.
+            </p>
+            <Link 
+              href="/contact"
+              className="px-8 py-4 bg-gradient-to-r from-accent to-[#E51A71] hover:from-[#E51A71] hover:to-accent text-white font-semibold rounded-full shadow-[0_10px_25px_rgba(229,26,113,0.3)] transition-all duration-300 hover:scale-105 pointer-events-auto"
+            >
+              Let's start working
+            </Link>
+          </div>
         </div>
       </section>
 

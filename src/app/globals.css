@@ -16,6 +16,7 @@
   --font-sans: var(--font-space);
   --font-heading: var(--font-space);
   --font-mono: var(--font-mono);
+  --font-display: var(--font-archivo);
 
   --animate-marquee: marquee 30s linear infinite;
   --animate-marquee-slow: marquee 50s linear infinite;

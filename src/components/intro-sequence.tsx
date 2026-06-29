@@ -175,7 +175,7 @@ export function IntroSequence() {
           <div className="absolute inset-0 bg-white z-0" />
 
           {/* Top Text */}
-          <h2 className="absolute top-8 w-full text-center text-black/80 font-bold text-sm md:text-base tracking-[0.2em] font-[family-name:var(--font-mono)] z-20 pointer-events-none">
+          <h2 className="absolute top-8 w-full text-center text-black/70 font-bold text-lg md:text-xl tracking-[0.25em] font-[family-name:var(--font-mono)] z-20 pointer-events-none">
             SOCRATES STUDIO
           </h2>
 
@@ -201,13 +201,12 @@ export function IntroSequence() {
 
           <h1
             ref={textRef}
-            className="text-4xl md:text-6xl lg:text-7xl font-heading font-extrabold text-black leading-[1.1] tracking-tight drop-shadow-sm mb-10"
+            className="text-4xl md:text-5xl lg:text-6xl font-heading font-normal text-black leading-[1.15] tracking-tight drop-shadow-sm mb-10"
           >
-            THE CONTENT SYSTEM<br />
-            BEHIND THE BRANDS<br />
-            YOUR INDUSTRY <span className="relative inline-block">
-              TALKS ABOUT.
-              <span className="absolute left-0 bottom-[-4px] w-full h-[6px] bg-orange-500 z-[-1]" />
+            <span className="text-accent font-normal">Stop</span> burning cash on content<br />that doesn't{" "}
+            <span className="relative inline-block">
+              perform.
+              <span className="absolute left-0 bottom-[-2px] w-full h-[3px] bg-accent z-[-1]" />
             </span>
           </h1>
 
@@ -217,10 +216,10 @@ export function IntroSequence() {
         {/* Bottom Text */}
         <div className="absolute bottom-10 w-full flex flex-col items-center justify-center z-20 pointer-events-none">
           {/* Removed scratch instruction text */}
-          <span className="text-black/40 text-[0.65rem] tracking-[0.3em] uppercase mb-2 font-[family-name:var(--font-mono)]">
+          <span className="text-black/60 text-[0.8rem] tracking-[0.3em] uppercase mb-2 font-[family-name:var(--font-mono)] font-semibold">
             SCROLL: DOWN TO DISCOVER
           </span>
-          <ArrowDown className="size-3 text-black/40 animate-bounce mt-2" />
+          <ArrowDown className="size-4 text-black/60 animate-bounce mt-2" />
         </div>
         </div>
 

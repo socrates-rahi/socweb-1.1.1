@@ -117,13 +117,10 @@ export function InkReveal({
   const resize = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const parent = canvas.parentElement;
-    if (!parent) return;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const rect = parent.getBoundingClientRect();
-    const w = rect.width;
-    const h = rect.height;
+    const w = window.innerWidth;
+    const h = window.innerHeight;
     dimsRef.current = { w, h };
     canvas.width = Math.round(w * dpr);
     canvas.height = Math.round(h * dpr);
@@ -278,7 +275,9 @@ export function InkReveal({
       className={className}
       style={{
         position: "absolute",
-        inset: 0,
+        left: "50%",
+        top: "50%",
+        transform: "translate(-50%, -50%)",
         zIndex: 1,
         cursor: "none",
         ...style,

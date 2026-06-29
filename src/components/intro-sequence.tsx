@@ -150,7 +150,7 @@ export function IntroSequence() {
         <div className="relative z-10 grid items-center justify-items-center max-w-5xl px-6 text-center w-full">
           <h2 
             ref={heroTextRef}
-            className="col-start-1 row-start-1 text-5xl md:text-7xl lg:text-8xl font-semibold text-transparent bg-clip-text bg-gradient-to-b from-white via-white to-white/50 leading-[1.05] tracking-tight relative"
+            className="col-start-1 row-start-1 text-5xl md:text-7xl lg:text-8xl font-semibold text-transparent bg-clip-text bg-gradient-to-b from-foreground via-foreground to-foreground/50 leading-[1.05] tracking-tight relative"
           >
             Craft the Identity that closes the round
             <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-accent/30 to-transparent bg-clip-text text-transparent opacity-50 blur-sm pointer-events-none" />
@@ -158,7 +158,7 @@ export function IntroSequence() {
 
           <p 
             ref={heroSubtextRef}
-            className="col-start-1 row-start-1 text-lg md:text-2xl text-white/70 max-w-3xl leading-relaxed font-sans opacity-0 pointer-events-none"
+            className="col-start-1 row-start-1 text-lg md:text-2xl text-foreground/70 max-w-3xl leading-relaxed font-sans opacity-0 pointer-events-none"
           >
             We are your complete creative partner. We craft high-end branding, shoot cinematic media, and run trend-optimized socials for startups, established businesses, and ambitious individuals who refuse to blend in.
           </p>
@@ -182,7 +182,7 @@ export function IntroSequence() {
         {/* The New Image Background (revealed by ink) */}
         <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
           <Image
-            src="/frameone.jpg"
+            src="/frameone-v3.jpg"
             alt="Frame Background"
             fill
             className="object-cover"
@@ -197,9 +197,7 @@ export function IntroSequence() {
 
         {/* Center Content Group */}
         <div className="relative z-20 flex flex-col items-center justify-center text-center px-6 pointer-events-none w-full max-w-5xl">
-          <p className="text-black/40 text-xs md:text-sm tracking-[0.2em] font-[family-name:var(--font-mono)] uppercase mb-8">
-            DESIGNED BY SOCRATES <span className="mx-4">•</span> TASK REVEAL SUITE
-          </p>
+          {/* Removed top small text */}
 
           <h1
             ref={textRef}
@@ -213,18 +211,12 @@ export function IntroSequence() {
             </span>
           </h1>
 
-          <p className="text-black/50 text-sm md:text-base font-[family-name:var(--font-mono)] max-w-3xl leading-relaxed mx-auto">
-            A high-precision modular workspace supporting custom shadcn paths, Tailwind<br />
-            styling setups and strong Typescript structures.
-          </p>
+          {/* Removed bottom small text */}
         </div>
 
         {/* Bottom Text */}
         <div className="absolute bottom-10 w-full flex flex-col items-center justify-center z-20 pointer-events-none">
-          <span className="text-orange-500 flex items-center gap-2 text-[0.55rem] tracking-[0.2em] uppercase mb-4 font-[family-name:var(--font-mono)]">
-            <span className="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse" />
-            DRIBBLE MOUSE OVER SCREEN TO SCRATCH CANVAS & UNCOVER COLOR STORM
-          </span>
+          {/* Removed scratch instruction text */}
           <span className="text-black/40 text-[0.65rem] tracking-[0.3em] uppercase mb-2 font-[family-name:var(--font-mono)]">
             SCROLL: DOWN TO DISCOVER
           </span>

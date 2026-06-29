@@ -15,22 +15,22 @@ export function CTAFooter() {
         {/* Pricing CTA */}
         <div className="mb-20 flex flex-col items-center">
           <span className="mono-meta mb-4">Curious about the investment?</span>
-          <Link href="/packages" className="group flex items-center gap-3 px-7 py-3.5 rounded-xl transition-all text-white text-sm font-medium font-[family-name:var(--font-mono)] tracking-wide uppercase hover:bg-white/5" style={{ background: "var(--bg-card)", border: "1px solid var(--border-medium)" }}>
+          <Link href="/packages" className="group flex items-center gap-3 px-7 py-3.5 rounded-xl transition-all text-foreground text-sm font-medium font-[family-name:var(--font-mono)] tracking-wide uppercase hover:bg-foreground/5" style={{ background: "var(--bg-card)", border: "1px solid var(--border-medium)" }}>
             View Pricing Packages
-            <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform text-white/40" />
+            <ArrowRight className="size-4 group-hover:translate-x-1 transition-transform text-foreground/40" />
           </Link>
         </div>
 
         {/* Final CTA */}
-        <h2 className="text-5xl md:text-7xl font-semibold text-white mb-6 tracking-tight">
+        <h2 className="text-5xl md:text-7xl font-semibold text-foreground mb-6 tracking-tight">
           Ready to dominate?
         </h2>
-        <p className="text-lg text-white/50 mb-12 max-w-2xl leading-relaxed">
+        <p className="text-lg text-foreground/50 mb-12 max-w-2xl leading-relaxed">
           Stop burning cash on content that doesn&apos;t work. Book a call to find out the best package for you.
         </p>
 
         <button className="group relative px-10 py-4 bg-accent text-white font-bold text-sm rounded-xl overflow-hidden hover:scale-[1.03] transition-all duration-300 shadow-[0_0_30px_rgba(227,46,14,0.3)] hover:shadow-[0_0_50px_rgba(227,46,14,0.5)] font-[family-name:var(--font-mono)] tracking-widest uppercase">
-          <div className="absolute inset-0 bg-white/15 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
+          <div className="absolute inset-0 bg-foreground/15 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out" />
           <span className="relative flex items-center gap-3">
             Book a Discovery Call
             <ArrowRight className="size-4 group-hover:translate-x-2 transition-transform" />
@@ -47,7 +47,7 @@ export function CTAFooter() {
           {/* Column 1: About */}
           <div>
             <span className="bracket-label text-xs block mb-4">[ SOCRATES_STUDIO ]</span>
-            <p className="text-white/35 text-sm leading-relaxed font-[family-name:var(--font-mono)]">
+            <p className="text-foreground/35 text-sm leading-relaxed font-[family-name:var(--font-mono)]">
               We architect pristine digital presence and ultra-high framerate cinematography for founders who refuse to blend in.
             </p>
           </div>
@@ -57,7 +57,7 @@ export function CTAFooter() {
             <span className="mono-meta block mb-4">Platform Links</span>
             <div className="space-y-2.5">
               {["SOCRATES_THESIS", "BRAND_PARTNERS", "CAPABILITIES_SPEC", "METRIC_PROOFS"].map((link) => (
-                <a key={link} href="#" className="block text-white/40 text-xs font-[family-name:var(--font-mono)] tracking-wider hover:text-accent transition-colors uppercase">
+                <a key={link} href="#" className="block text-foreground/40 text-xs font-[family-name:var(--font-mono)] tracking-wider hover:text-accent transition-colors uppercase">
                   {link}
                 </a>
               ))}
@@ -70,18 +70,18 @@ export function CTAFooter() {
             <div className="space-y-2.5">
               {["AI_BLUEPRINT_LAB", "CLIENT_ENDORSEMENTS", "SERVICE_PRICING"].map((link) => (
                 link === "SERVICE_PRICING" ? (
-                  <Link key={link} href="/packages" className="block text-white/40 text-xs font-[family-name:var(--font-mono)] tracking-wider hover:text-accent transition-colors uppercase">
+                  <Link key={link} href="/packages" className="block text-foreground/40 text-xs font-[family-name:var(--font-mono)] tracking-wider hover:text-accent transition-colors uppercase">
                     {link}
                   </Link>
                 ) : (
-                  <a key={link} href="#" className="block text-white/40 text-xs font-[family-name:var(--font-mono)] tracking-wider hover:text-accent transition-colors uppercase">
+                  <a key={link} href="#" className="block text-foreground/40 text-xs font-[family-name:var(--font-mono)] tracking-wider hover:text-accent transition-colors uppercase">
                     {link}
                   </a>
                 )
               ))}
               <button 
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="flex items-center gap-2 text-accent text-xs font-[family-name:var(--font-mono)] tracking-wider hover:text-white transition-colors uppercase"
+                className="flex items-center gap-2 text-accent text-xs font-[family-name:var(--font-mono)] tracking-wider hover:text-foreground transition-colors uppercase"
               >
                 [ TRIGGER_SYSTEM_RESET_▲ ]
               </button>

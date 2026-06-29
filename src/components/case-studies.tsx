@@ -97,7 +97,7 @@ export function CaseStudies() {
           <span className="mono-meta">Verified via Stripe / GA / Hubspot</span>
         </div>
         
-        <h2 className="text-4xl md:text-6xl font-semibold text-white mb-16 tracking-tight">
+        <h2 className="text-4xl md:text-6xl font-semibold text-foreground mb-16 tracking-tight">
           Proof of Work
         </h2>
 
@@ -118,8 +118,8 @@ export function CaseStudies() {
                 <span className="mono-meta text-[0.6rem]">{metric.label}</span>
               </div>
 
-              <p className="text-4xl md:text-5xl font-bold text-white mb-2 tracking-tight">{metric.value}</p>
-              <p className="text-white/70 font-medium text-sm mb-1">{metric.title}</p>
+              <p className="text-4xl md:text-5xl font-bold text-foreground mb-2 tracking-tight">{metric.value}</p>
+              <p className="text-foreground/70 font-medium text-sm mb-1">{metric.title}</p>
               <p className="mono-meta text-[0.6rem] mb-6">{metric.detail}</p>
 
               <div className="flex gap-6 pt-4" style={{ borderTop: "1px solid var(--border-subtle)" }}>
@@ -129,7 +129,7 @@ export function CaseStudies() {
                 </div>
                 <div>
                   <span className="mono-meta block text-[0.55rem] mb-0.5">Index Scale</span>
-                  <span className="text-white/60 text-xs font-[family-name:var(--font-mono)]">{metric.scale}</span>
+                  <span className="text-foreground/60 text-xs font-[family-name:var(--font-mono)]">{metric.scale}</span>
                 </div>
               </div>
             </div>
@@ -144,11 +144,11 @@ export function CaseStudies() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.map((t, idx) => (
             <div key={idx} className="tech-card corner-markers p-8">
-              <p className="text-white/60 text-sm leading-relaxed mb-8 italic">
+              <p className="text-foreground/60 text-sm leading-relaxed mb-8 italic">
                 &ldquo;{t.quote}&rdquo;
               </p>
               <div className="pt-4" style={{ borderTop: "1px solid var(--border-subtle)" }}>
-                <p className="text-white font-medium text-sm">{t.name}</p>
+                <p className="text-foreground font-medium text-sm">{t.name}</p>
                 <p className="mono-meta text-[0.6rem] mt-1">{t.company}</p>
               </div>
             </div>

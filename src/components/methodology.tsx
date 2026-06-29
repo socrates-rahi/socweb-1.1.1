@@ -83,10 +83,10 @@ export function MethodologySection() {
           
           {/* Left Column: Heading & Outcome */}
           <div className="w-full lg:w-2/5">
-            <h2 className="text-4xl md:text-5xl font-semibold text-white mb-6 tracking-tight">
+            <h2 className="text-4xl md:text-5xl font-semibold text-foreground mb-6 tracking-tight">
               Our Protocol
             </h2>
-            <p className="text-white/50 mb-12 leading-relaxed">
+            <p className="text-foreground/50 mb-12 leading-relaxed">
               A systematic, brutal, and elegant approach to building brands that cannot be ignored.
             </p>
 
@@ -94,16 +94,16 @@ export function MethodologySection() {
             <div className="tech-card p-8 relative overflow-hidden">
               <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-accent via-accent/50 to-transparent" />
               <span className="bracket-label text-xs">[ PROJECTED_OUTCOME ]</span>
-              <p className="text-5xl font-bold text-white mt-4 mb-2 tracking-tight">260%</p>
-              <p className="text-white/70 font-medium mb-6">Higher Conversion Rate</p>
+              <p className="text-5xl font-bold text-foreground mt-4 mb-2 tracking-tight">260%</p>
+              <p className="text-foreground/70 font-medium mb-6">Higher Conversion Rate</p>
               <div className="space-y-3">
                 <div className="flex items-center gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-                  <span className="text-white/50 text-sm">Revenue leaks plugged</span>
+                  <span className="text-foreground/50 text-sm">Revenue leaks plugged</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
-                  <span className="text-white/50 text-sm">Lower Customer Acquisition Cost</span>
+                  <span className="text-foreground/50 text-sm">Lower Customer Acquisition Cost</span>
                 </div>
               </div>
 
@@ -145,7 +145,7 @@ export function MethodologySection() {
                     <span className={`status-badge ${openIndex === idx ? "!text-accent !border-accent/30" : ""}`}>
                       {phase.status}
                     </span>
-                    <ChevronDown className={`size-4 text-white/30 transition-transform duration-300 ${openIndex === idx ? "rotate-180" : ""}`} />
+                    <ChevronDown className={`size-4 text-foreground/30 transition-transform duration-300 ${openIndex === idx ? "rotate-180" : ""}`} />
                   </div>
                 </div>
 
@@ -155,10 +155,10 @@ export function MethodologySection() {
                   style={{ maxHeight: openIndex === idx ? "300px" : "0px", opacity: openIndex === idx ? 1 : 0 }}
                 >
                   <div className="px-6 pb-6">
-                    <h3 className="text-xl md:text-2xl font-medium text-white mb-4">
+                    <h3 className="text-xl md:text-2xl font-medium text-foreground mb-4">
                       {phase.title}
                     </h3>
-                    <p className="text-white/45 leading-relaxed text-sm">
+                    <p className="text-foreground/45 leading-relaxed text-sm">
                       {phase.description}
                     </p>
                   </div>

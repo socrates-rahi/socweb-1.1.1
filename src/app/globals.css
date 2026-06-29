@@ -5,6 +5,10 @@
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
   --color-accent-dark: var(--accent-dark);
+  --color-accent-1: var(--accent-1);
+  --color-accent-2: var(--accent-2);
+  --color-accent-3: var(--accent-3);
+  --color-accent-4: var(--accent-4);
   --color-zinc-800: #27272a;
   --color-zinc-900: #18181b;
   --color-zinc-950: #09090b;
@@ -48,6 +52,10 @@
   --foreground: #ffffff;
   --accent: #E32E0E;
   --accent-dark: #c42000;
+  --accent-1: #FF8534; /* Orange */
+  --accent-2: #FC4353; /* Red */
+  --accent-3: #E51A71; /* Pink */
+  --accent-4: #92187C; /* Purple */
   --bg-card: #111116;
   --bg-card-hover: #1a1a24;
   --border-subtle: rgba(255, 255, 255, 0.06);
@@ -74,10 +82,24 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
 }
 
-/* Hide scrollbar for premium feel */
+/* Thin premium scrollbar */
 ::-webkit-scrollbar {
-  width: 0px;
+  width: 3px;
   background: transparent;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent);
 }
 
 /* Custom Selection */
@@ -94,8 +116,8 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   gap: 0.5rem;
   font-family: var(--font-mono), monospace;
-  font-size: 0.7rem;
-  font-weight: 500;
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -114,9 +136,9 @@ h1, h2, h3, h4, h5, h6 {
 /* Bracket label: [ TEXT ] in orange monospace */
 .bracket-label {
   font-family: var(--font-mono), monospace;
-  font-size: 0.75rem;
-  font-weight: 500;
-  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
 }
@@ -124,8 +146,8 @@ h1, h2, h3, h4, h5, h6 {
 /* Status badge */
 .status-badge {
   font-family: var(--font-mono), monospace;
-  font-size: 0.65rem;
-  font-weight: 500;
+  font-size: 0.7rem;
+  font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -145,11 +167,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .tech-card:hover {
   border-color: transparent;
-  background-image: linear-gradient(var(--bg-card-hover), var(--bg-card-hover)), conic-gradient(from var(--border-angle), rgba(227, 46, 14, 0.2) 0%, rgba(227, 46, 14, 1) 30%, rgba(138, 43, 226, 1) 70%, rgba(227, 46, 14, 0.2) 100%);
+  background-image: linear-gradient(var(--bg-card-hover), var(--bg-card-hover)), conic-gradient(from var(--border-angle), var(--accent-1) 0%, var(--accent-2) 25%, var(--accent-3) 50%, var(--accent-4) 75%, var(--accent-1) 100%);
   background-clip: padding-box, border-box;
   background-origin: padding-box, border-box;
   animation: spin-gradient 3s linear infinite;
-  box-shadow: 0 0 15px rgba(227, 46, 14, 0.15);
+  box-shadow: 0 0 15px rgba(252, 67, 83, 0.15);
   transform: translateY(-2px);
 }
 
@@ -209,9 +231,9 @@ h1, h2, h3, h4, h5, h6 {
 /* Monospace metadata text */
 .mono-meta {
   font-family: var(--font-mono), monospace;
-  font-size: 0.7rem;
-  font-weight: 400;
-  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--text-muted);
 }
@@ -231,4 +253,20 @@ h1, h2, h3, h4, h5, h6 {
   background: linear-gradient(90deg, transparent, rgba(56, 130, 246, 0.15), rgba(227, 46, 14, 0.1), transparent);
   background-size: 200% 100%;
   animation: shimmer 8s linear infinite;
+}
+
+/* Light Mode Overrides */
+.theme-light {
+  --background: #faf6f0;
+  --foreground: #09090b;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f4f4f5;
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-medium: rgba(0, 0, 0, 0.15);
+  --text-muted: rgba(0, 0, 0, 0.55);
+  --text-secondary: rgba(0, 0, 0, 0.75);
+}
+
+.theme-light .dotted-surface-container {
+  filter: invert(1);
 }

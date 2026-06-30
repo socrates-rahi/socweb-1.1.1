@@ -20,16 +20,16 @@ import {
 } from "lucide-react";
 
 // CONFIGURATION: Replace these values with your Google Form URL and field entry IDs
-const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfX8m-gDUR15d2aVpxV3r78Q_o7U0T2z8E3yT4vKxN8Y3zY-g/formResponse";
+const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSfCHTmcw6_j8ChVphuLapiIZE_AifpRbojai_zMD6yzRzXBPQ/formResponse";
 const GOOGLE_FORM_ENTRIES = {
-  name: "entry.2005620554",       // Replace with your Google Form Name field entry ID
-  email: "entry.1045781291",      // Replace with your Google Form Email field entry ID
-  company: "entry.839337160",     // Replace with your Google Form Company field entry ID
-  location: "entry.227317666",    // Replace with your Google Form Location field entry ID
-  phone: "entry.1166974658",      // Replace with your Google Form Contact Number field entry ID
-  social: "entry.1895743186",     // Replace with your Google Form Instagram/LinkedIn field entry ID
-  date: "entry.987654321",        // Optional: Replace if you want to store selected Date
-  time: "entry.123456789"         // Optional: Replace if you want to store selected Time
+  name: "entry.309791562",        // Full Name
+  email: "entry.212945244",       // Email Address
+  company: "entry.1460508866",    // Company Name
+  location: "entry.2063604588",   // Location
+  phone: "entry.1421889979",      // Contact Number
+  social: "entry.1652772638",     // Instagram or LinkedIn ID
+  date: "entry.639753157",        // Date
+  time: "entry.2018951407"        // Time
 };
 
 export default function ContactPage() {
@@ -90,10 +90,10 @@ export default function ContactPage() {
     }
   };
 
-  // Generate times from 1 PM to 9 PM
+  // Generate times from 1 PM to 9 PM at half-hour intervals
   const timeSlots = [
-    "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", 
-    "5:00 PM", "6:00 PM", "7:00 PM", "8:00 PM", "9:00 PM"
+    "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM", 
+    "5:00 PM", "5:30 PM", "6:00 PM", "6:30 PM", "7:00 PM", "7:30 PM", "8:00 PM", "8:30 PM", "9:00 PM"
   ];
 
   const handleTimeSelect = (time: string) => {
@@ -105,17 +105,56 @@ export default function ContactPage() {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     // Standard validation
     if (!formData.name || !formData.email || !formData.phone) {
       alert("Please fill in all required fields (Name, Email, Contact Number).");
-      e.preventDefault();
       return;
     }
     
-    // The form action will POST to the hidden iframe, which will trigger onload.
-    // We update UI state to success.
-    setIsSubmitted(true);
+    setIsSubmitting(true);
+
+    const payload = new FormData();
+    payload.append(GOOGLE_FORM_ENTRIES.name, formData.name);
+    payload.append(GOOGLE_FORM_ENTRIES.email, formData.email);
+    payload.append(GOOGLE_FORM_ENTRIES.company, formData.company);
+    payload.append(GOOGLE_FORM_ENTRIES.location, formData.location);
+    payload.append(GOOGLE_FORM_ENTRIES.phone, formData.phone);
+    payload.append(GOOGLE_FORM_ENTRIES.social, formData.social);
+
+    if (selectedDate) {
+      payload.append(`${GOOGLE_FORM_ENTRIES.date}_year`, selectedDate.getFullYear().toString());
+      payload.append(`${GOOGLE_FORM_ENTRIES.date}_month`, (selectedDate.getMonth() + 1).toString());
+      payload.append(`${GOOGLE_FORM_ENTRIES.date}_day`, selectedDate.getDate().toString());
+    }
+
+    if (selectedTime) {
+      const [timePart, modifier] = selectedTime.split(' ');
+      let [h, m] = timePart.split(':');
+      let hour = parseInt(h, 10);
+      if (modifier === 'PM' && hour !== 12) hour += 12;
+      if (modifier === 'AM' && hour === 12) hour = 0;
+      payload.append(`${GOOGLE_FORM_ENTRIES.time}_hour`, hour.toString().padStart(2, '0'));
+      payload.append(`${GOOGLE_FORM_ENTRIES.time}_minute`, selectedTime.split(':')[1].split(' ')[0]);
+    }
+
+    try {
+      await fetch(GOOGLE_FORM_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: payload
+      });
+      setIsSubmitted(true);
+    } catch (error) {
+      console.error(error);
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleIframeLoad = () => {
@@ -282,7 +321,7 @@ export default function ContactPage() {
                       <Clock className="size-4 text-accent" /> Available Times
                     </h4>
                     {selectedDate ? (
-                      <div className="grid grid-cols-2 md:grid-cols-1 gap-2 max-h-[300px] overflow-y-auto pr-1">
+                      <div className="grid grid-cols-2 md:grid-cols-1 gap-2 max-h-[280px] overflow-y-auto pr-2 custom-scrollbar" data-lenis-prevent>
                         {timeSlots.map(time => {
                           const isSelected = selectedTime === time;
                           return (
@@ -329,24 +368,11 @@ export default function ContactPage() {
                     </button>
                   </div>
 
-                  {/* Hidden iframe for silent form submission */}
-                  <iframe 
-                    name="hidden_iframe" 
-                    id="hidden_iframe" 
-                    style={{ display: 'none' }} 
-                    onLoad={handleIframeLoad}
-                  ></iframe>
-
                   <form 
-                    action={GOOGLE_FORM_URL} 
-                    method="POST" 
-                    target="hidden_iframe" 
                     onSubmit={handleSubmit}
                     className="grid grid-cols-1 md:grid-cols-2 gap-4"
                   >
-                    {/* Add date/time values to form fields if you mapped them */}
-                    <input type="hidden" name={GOOGLE_FORM_ENTRIES.date} value={formatDateString(selectedDate)} />
-                    <input type="hidden" name={GOOGLE_FORM_ENTRIES.time} value={selectedTime || ""} />
+
 
                     <div className="space-y-1.5">
                       <label className="text-xs font-bold text-neutral-800 uppercase tracking-wider flex items-center gap-1.5">
@@ -361,8 +387,7 @@ export default function ContactPage() {
                         placeholder="Sumit Rahi"
                         className="w-full px-4 py-3 bg-white/40 border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent text-neutral-950 placeholder-neutral-600/50 font-medium text-sm transition-all"
                       />
-                      {/* Real Google Form Input */}
-                      <input type="hidden" name={GOOGLE_FORM_ENTRIES.name} value={formData.name} />
+
                     </div>
 
                     <div className="space-y-1.5">
@@ -378,8 +403,7 @@ export default function ContactPage() {
                         placeholder="sumit@socrates.studio"
                         className="w-full px-4 py-3 bg-white/40 border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent text-neutral-950 placeholder-neutral-600/50 font-medium text-sm transition-all"
                       />
-                      {/* Real Google Form Input */}
-                      <input type="hidden" name={GOOGLE_FORM_ENTRIES.email} value={formData.email} />
+
                     </div>
 
                     <div className="space-y-1.5">
@@ -394,8 +418,7 @@ export default function ContactPage() {
                         placeholder="Socrates Studio"
                         className="w-full px-4 py-3 bg-white/40 border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent text-neutral-950 placeholder-neutral-600/50 font-medium text-sm transition-all"
                       />
-                      {/* Real Google Form Input */}
-                      <input type="hidden" name={GOOGLE_FORM_ENTRIES.company} value={formData.company} />
+
                     </div>
 
                     <div className="space-y-1.5">
@@ -410,8 +433,7 @@ export default function ContactPage() {
                         placeholder="India"
                         className="w-full px-4 py-3 bg-white/40 border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent text-neutral-950 placeholder-neutral-600/50 font-medium text-sm transition-all"
                       />
-                      {/* Real Google Form Input */}
-                      <input type="hidden" name={GOOGLE_FORM_ENTRIES.location} value={formData.location} />
+
                     </div>
 
                     <div className="space-y-1.5">
@@ -427,8 +449,7 @@ export default function ContactPage() {
                         placeholder="+91 98765 43210"
                         className="w-full px-4 py-3 bg-white/40 border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent text-neutral-950 placeholder-neutral-600/50 font-medium text-sm transition-all"
                       />
-                      {/* Real Google Form Input */}
-                      <input type="hidden" name={GOOGLE_FORM_ENTRIES.phone} value={formData.phone} />
+
                     </div>
 
                     <div className="space-y-1.5">
@@ -443,15 +464,15 @@ export default function ContactPage() {
                         placeholder="@socrates.studio / in/sumitrahi"
                         className="w-full px-4 py-3 bg-white/40 border border-white/50 rounded-xl focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent text-neutral-950 placeholder-neutral-600/50 font-medium text-sm transition-all"
                       />
-                      {/* Real Google Form Input */}
-                      <input type="hidden" name={GOOGLE_FORM_ENTRIES.social} value={formData.social} />
+
                     </div>
 
                     <button
                       type="submit"
-                      className="md:col-span-2 mt-4 w-full py-4 bg-gradient-to-r from-accent to-[#E51A71] hover:from-[#E51A71] hover:to-accent text-white font-extrabold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-[1px] text-base cursor-pointer"
+                      disabled={isSubmitting}
+                      className="md:col-span-2 mt-4 w-full py-4 bg-gradient-to-r from-accent to-[#E51A71] hover:from-[#E51A71] hover:to-accent text-white font-extrabold rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-[1px] text-base cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
                     >
-                      Confirm Booking
+                      {isSubmitting ? "Confirming..." : "Confirm Booking"}
                     </button>
                   </form>
                 </div>

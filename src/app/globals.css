@@ -103,6 +103,26 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--accent);
 }
 
+/* Custom Scrollbar for scrollable cards/slots */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05) !important;
+  border-radius: 8px !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.25) !important;
+  border-radius: 8px !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: var(--accent) !important;
+}
+
 /* Custom Selection */
 ::selection {
   background: var(--accent);

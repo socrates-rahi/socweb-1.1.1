@@ -45,8 +45,10 @@ export default function Home() {
         <LogoMarquee />
         <div className="section-divider" />
         <ServicesGrid />
+        {/* Hiding Case Studies for now
         <div className="section-divider" />
         <CaseStudies />
+        */}
         <div className="section-divider" />
         <WhyUsSection />
         <div className="section-divider" />

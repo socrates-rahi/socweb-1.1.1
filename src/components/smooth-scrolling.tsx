@@ -1,49 +1,51 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { ReactLenis } from "lenis/react";
+import { useEffect } from "react";
+import { ReactLenis, useLenis } from "lenis/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-export function SmoothScrolling({ children }: { children: React.ReactNode }) {
-  const lenisRef = useRef<any>(null);
+function ScrollSync() {
+  const lenis = useLenis();
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const lenis = lenisRef.current?.lenis;
     if (!lenis) return;
 
-    // Direct integration: update ScrollTrigger whenever Lenis scrolls
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Sync ScrollTrigger on scroll
     const handleScroll = () => {
       ScrollTrigger.update();
     };
     lenis.on("scroll", handleScroll);
-    
-    // Drive Lenis requestAnimationFrame loop using GSAP Ticker
+
+    // Drive Lenis RAF loop via GSAP ticker
     const updateGsap = (time: number) => {
       lenis.raf(time * 1000);
     };
     gsap.ticker.add(updateGsap);
-    
-    // Clean up ticker and scroll events on unmount
+
     return () => {
       lenis.off("scroll", handleScroll);
       gsap.ticker.remove(updateGsap);
     };
-  }, []);
+  }, [lenis]);
 
+  return null;
+}
+
+export function SmoothScrolling({ children }: { children: React.ReactNode }) {
   return (
     <ReactLenis 
-      ref={lenisRef} 
       root 
       options={{ 
-        autoRaf: false, // Turn off Lenis's built-in animation loop to let GSAP drive it
-        lerp: 0.08,     // Smooth inertia interpolation
+        autoRaf: false, // Disables built-in RAF loop so GSAP drives it via ScrollSync
+        lerp: 0.08, 
         wheelMultiplier: 1.0, 
         smoothWheel: true 
       }}
     >
+      <ScrollSync />
       {children}
     </ReactLenis>
   );

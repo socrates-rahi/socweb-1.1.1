@@ -68,23 +68,27 @@ export function CaseStudies() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    metricsRef.current.forEach((el, idx) => {
-      if (!el) return;
-      gsap.fromTo(el,
-        { opacity: 0, y: 30 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          delay: idx * 0.1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: el,
-            start: "top 85%",
+    const ctx = gsap.context(() => {
+      metricsRef.current.forEach((el, idx) => {
+        if (!el) return;
+        gsap.fromTo(el,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            delay: idx * 0.1,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            }
           }
-        }
-      );
-    });
+        );
+      });
+    }, sectionRef);
+    return () => ctx.revert();
   }, []);
 
   return (

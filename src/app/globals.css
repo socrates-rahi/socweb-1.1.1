@@ -182,8 +182,12 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 12px;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s ease;
   position: relative;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
 }
 
 .tech-card:hover {
@@ -267,13 +271,9 @@ h1, h2, h3, h4, h5, h6 {
 .shimmer-edge::before {
   content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  top: 0; left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(56, 130, 246, 0.15), rgba(227, 46, 14, 0.1), transparent);
-  background-size: 200% 100%;
-  animation: shimmer 8s linear infinite;
+  background: linear-gradient(90deg, transparent, rgba(56, 130, 246, 0.15), rgba(227, 46, 14, 0.3), transparent);
 }
 
 /* Light Mode Overrides */

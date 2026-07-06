@@ -16,11 +16,17 @@ export default function Home() {
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
+    let ticking = false;
     const handleScroll = () => {
-      // Show button after scrolling past the first frame
-      setShowButton(window.scrollY > window.innerHeight * 0.8);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setShowButton(window.scrollY > window.innerHeight * 0.8);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
   return (

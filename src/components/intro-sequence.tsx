@@ -54,7 +54,7 @@ export function IntroSequence() {
           trigger: containerRef.current,
           start: "top top",
           end: "+=1200", // Decreased scroll distance for faster transitions
-          scrub: 1.5, // Added slight scrub delay for inertia feel
+          scrub: 0.5, // Tightened scrub delay for responsive catch-up
           pin: true, // Pin the Hero Section
         },
       });

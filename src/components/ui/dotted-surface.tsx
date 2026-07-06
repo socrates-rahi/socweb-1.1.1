@@ -84,7 +84,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 		scene.add(points);
 
 		let count = 0;
-		let animationId: number;
+		let animationId: number = 0;
 
 		// Animation function
 		const animate = () => {
@@ -135,12 +135,35 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 			count,
 		};
 
+		// Intersection Observer to pause animation when off-screen
+		const observer = new IntersectionObserver((entries) => {
+			entries.forEach((entry) => {
+				if (entry.isIntersecting) {
+					if (!sceneRef.current?.animationId) {
+						animate();
+					}
+				} else {
+					if (sceneRef.current?.animationId) {
+						cancelAnimationFrame(sceneRef.current.animationId);
+						sceneRef.current.animationId = 0;
+					}
+				}
+			});
+		}, { threshold: 0 });
+		
+		if (containerRef.current) {
+			observer.observe(containerRef.current);
+		}
+
 		// Cleanup function
 		return () => {
 			window.removeEventListener("resize", handleResize);
+			observer.disconnect();
 
 			if (sceneRef.current) {
-				cancelAnimationFrame(sceneRef.current.animationId);
+				if (sceneRef.current.animationId) {
+					cancelAnimationFrame(sceneRef.current.animationId);
+				}
 
 				// Clean up Three.js objects
 				sceneRef.current.scene.traverse((object) => {

@@ -35,23 +35,26 @@ export function WhyUsSection() {
 
     if (!sectionRef.current) return;
 
-    cardsRef.current.forEach((card, index) => {
-      if (!card) return;
-      gsap.fromTo(card,
-        { opacity: 0, y: 40 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: card,
-            start: "top 80%",
-            toggleActions: "play none none reverse",
+    const ctx = gsap.context(() => {
+      cardsRef.current.forEach((card, index) => {
+        if (!card) return;
+        gsap.fromTo(card,
+          { opacity: 0, y: 40 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: card,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            }
           }
-        }
-      );
-    });
+        );
+      });
+    }, sectionRef);
+    return () => ctx.revert();
 
   }, []);
 

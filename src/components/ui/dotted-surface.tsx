@@ -110,7 +110,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 			positionAttribute.needsUpdate = true;
 
 			renderer.render(scene, camera);
-			count += 0.02;
+			count += 0.045;
 		};
 
 		// Handle window resize
